@@ -165,11 +165,9 @@ task(
 module.exports = {
   networks: {
     rinkeby: {
-      url: "https://rinkeby.infura.io/v3/320dde9e4ebd4b02be7e2a3e5029477f",
-      accounts: [
-        `0x99f64c29a011d40736582ded6f8f69a0a1254961a3dbb2934ef7faaf4711bf96`,
-      ],
-    },
+      url: process.env.RINKEBY_URL,
+      accounts: [`0x${process.env.RINKEBY_PRIVATE_KEY}`]
+    }
   },
   plugins: ["solidity-coverage"],
   solidity: {
