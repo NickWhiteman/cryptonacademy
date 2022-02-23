@@ -1,6 +1,6 @@
 # Basic Sample Hardhat Project
 
-npx hardhat accounts
+npx hardhat account
 npx hardhat compile
 npx hardhat clean
 npx hardhat test

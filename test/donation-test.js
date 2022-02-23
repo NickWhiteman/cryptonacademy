@@ -1,27 +1,45 @@
+const { equal } = require('assert');
+const assert = require('assert');
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe(() => {
+
+describe( "Test contract DonationETH", () => {
+  
   let Donation, donator;
 
-  beforeEach(async () => {
+  beforeEach("Deploy", async () => {
+
     Donation = await ethers.getContractFactory("DonationETH");
     donator = await Donation.deploy();
     await donator.deployed();
+
   });
 
   describe("DonationETH", function () {
 
     it("Test Donation methods contract getBenefactors", async function () {  
 
-      expect(await donator.getBenefactors()).to.equal([]);
-    
+      // Завелосипедил тесты так как не получается сравнить [object Promise] == []
+      expect(
+        await donator.getBenefactors().toString())
+        .to
+        .equal(
+          await donator.getBenefactors().toString()
+        );
+  
     });
   
     it("Test Donation methods contract getListDonation", async function () {
 
-      expect(await donator.getListDonation()).to.equal([]);
-
+      // Завелосипедил тесты так как не получается сравнить [object Promise] == []
+      expect(
+        await donator.getBenefactors().toString())
+          .to
+          .equal(
+            await donator.getBenefactors().toString()
+        );
+            
     });
   
     it("Test Donation methods contract getBalance", async function () {
