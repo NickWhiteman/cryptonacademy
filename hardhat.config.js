@@ -8,9 +8,6 @@ const deploy = async (hre) => {
   return await donator.deployed();
 }
 
-const ETHERS = 10**18;
-const GAS_PRICE = 10**6;
-
 task(
   "deploy", 
   "Deploy contract", 
