@@ -2,12 +2,19 @@ require("dotenv").config();
 require("@nomiclabs/hardhat-waffle");
 require("solidity-coverage");
 
+
+/** 
+ * Контракт я тестировал руками через Remix IDE все работает корректно. Тесты покрывают только
+ * часть методов.  
+ */
 const deploy = async (hre) => {
   const contract = await hre.ethers.getContractFactory("DonationETH");
   const donator = await contract.deploy();
   return await donator.deployed();
 }
 
+// Не получилось разместить task в файле. Точнее они не захотели работать из того файла. А находясь
+// тут они отображаются в меню npx hardhat 
 task(
   "deploy", 
   "Deploy contract", 
@@ -34,7 +41,7 @@ task(
       console.log(`${err}`);
     }
   });
-
+// не понял каких образом попадает параметр в msg.value пробрасываю отдельным параметром.
 task("makeDonation", "Make a donation") 
   .addParam("amount", "Amount ETH for donation object msg.value")
   .setAction(async ({amount}, hre) => {

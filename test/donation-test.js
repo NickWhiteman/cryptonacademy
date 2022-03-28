@@ -1,44 +1,50 @@
-const { equal } = require('assert');
-const assert = require('assert');
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 
 describe( "Test contract DonationETH", () => {
   
-  let Donation, donator;
+  let Donation, donator, owner, addr1, addr2;
 
   beforeEach("Deploy", async () => {
 
     Donation = await ethers.getContractFactory("DonationETH");
     donator = await Donation.deploy();
     await donator.deployed();
+    [owner, addr1, addr2] = await ethers.getSigners();
 
   });
 
+  /** 
+   * Не могу получить owner контракта для тестирования.  
+   */
+  // describe("Deployment", function() {
+
+  //   it("Should set the right owner ", async () => {
+  //     expect(await donator.owner()).to.equal(owner.address);
+  //   });
+    
+  // });
+
+  /** 
+   * Я так и не смог справиться с пониманием тестирвания контрактов. 
+   * вв моей практики тесты редкость. Но я наверстаю. 
+   */
   describe("DonationETH", function () {
 
     it("Test Donation methods contract getBenefactors", async function () {  
 
-      // Завелосипедил тесты так как не получается сравнить [object Promise] == []
-      expect(
-        await donator.getBenefactors().toString())
+      expect(await donator.getBenefactors("0xe75697551A41AE8bfcc39b72f0AAf3415479B223"))
         .to
-        .equal(
-          await donator.getBenefactors().toString()
-        );
+        .equal("0x0000000000000000000000000000000000000000");
   
     });
   
     it("Test Donation methods contract getListDonation", async function () {
 
-      // Завелосипедил тесты так как не получается сравнить [object Promise] == []
-      expect(
-        await donator.getBenefactors().toString())
+      expect(await donator.getListDonation("0xe75697551A41AE8bfcc39b72f0AAf3415479B223"))
           .to
-          .equal(
-            await donator.getBenefactors().toString()
-        );
+          .equal("0x0000000000000000000000000000000000000000");
             
     });
   

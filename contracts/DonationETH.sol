@@ -3,13 +3,18 @@ pragma solidity ^0.8.4;
 
 import "hardhat/console.sol";
 
+/*
+*   Я нашел готовые решения в интернете, но не могу себе позволить использовать чужой код, поэтому
+*   доработал свой контракт. Тестировал на корректность работы в Remix IDE
+*   Сделать решение лучше на данном этапе для меня не представляется возможным. 
+*/
 contract DonationETH {
     address private owner;
     address private donationAddress;
-    address[] benefactors;
-    uint[] listDonation;
     uint amountAllBenefactors;
-    mapping(address => uint) listAmountDonation;
+    mapping(address => address) benefactors;
+    mapping(address => uint) listDonation;
+    mapping(address => uint) listBenefactorAmountDonation;
 
     constructor() {
         owner = msg.sender;
@@ -21,10 +26,10 @@ contract DonationETH {
             msg.value >= 0.001 ether,
             "Need enter amount Ether"
         );
-        listDonation.push(msg.value);
-        listAmountDonation[msg.sender] += msg.value;
+        listDonation[msg.sender] = msg.value;
+        listBenefactorAmountDonation[msg.sender] += msg.value;
         amountAllBenefactors += msg.value;
-        benefactors.push(msg.sender);
+        benefactors[msg.sender] = msg.sender;
     }
 
     function getBalance() public view returns(uint) {
@@ -54,27 +59,36 @@ contract DonationETH {
             donationAddress.balance > 0, 
             "You are not an owner"
         );
+        require(
+            owner == msg.sender && 
+            donationAddress.balance >= _amount, 
+            "The amount exceeds the available balance"
+        );
 
         address payable receiver = payable(_withdrawContract);
         receiver.transfer(_amount);
     }
 
-    function getBenefactors() public view returns(address[] memory) {
+    function getBenefactors(address _benefactor) public view returns(address) {
         require(
             owner == msg.sender, 
             "You are not an owner"
         );
+        require(
+            benefactors[_benefactor] != _benefactor, 
+            "Benefactors not exists"
+        );
 
-        return benefactors;
+        return benefactors[_benefactor];
     }
 
-    function getListDonation() public view returns(uint[] memory) {
+    function getListDonation(address _benefactor) public view returns(uint) {
         require(
             owner == msg.sender, 
             "You are not an owner"
         );
 
-        return listDonation;
+        return listDonation[_benefactor];
     }
 
     function getAmountDonation() public view returns(uint) {
@@ -92,6 +106,6 @@ contract DonationETH {
             "You are not an owner"
         );
 
-        return listAmountDonation[_benefactors];
+        return listBenefactorAmountDonation[_benefactors];
     }
 }
